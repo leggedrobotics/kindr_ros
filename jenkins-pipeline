@@ -1,2 +1,1 @@
-library 'continuous_integration_pipeline'
-ciPipeline("")
+sh "echo 1"
