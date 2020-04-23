@@ -7,6 +7,8 @@
 // rviz
 #include <rviz/message_filter_display.h>
 
+#include <OgreColourValue.h>
+
 // kindr ros
 #include <kindr_msgs/VectorAtPosition.h>
 
