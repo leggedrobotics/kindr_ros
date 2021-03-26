@@ -11,6 +11,9 @@
 
 // kindr ros
 #include <kindr_msgs/VectorAtPosition.h>
+
+// ogre
+#include <OGRE/OgreColourValue.h>
 #endif
 
 

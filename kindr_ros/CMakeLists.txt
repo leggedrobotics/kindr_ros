@@ -1,11 +1,11 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.5.1)
 project(kindr_ros)
 
 add_definitions(-std=c++11)
 
 find_package(catkin REQUIRED COMPONENTS
-   geometry_msgs tf
-)
+  geometry_msgs tf
+  )
 
 # Attempt to find catkinized kindr
 find_package(kindr QUIET)
@@ -19,7 +19,7 @@ find_package(Eigen3 REQUIRED)
 
 catkin_package(
   INCLUDE_DIRS include ${EIGEN3_INCLUDE_DIR}
-#  LIBRARIES kindr_ros
+  #  LIBRARIES kindr_ros
   CATKIN_DEPENDS geometry_msgs tf
   DEPENDS kindr
 )
@@ -33,18 +33,25 @@ include_directories(${kindr_INCLUDE_DIRS})
 ## Testing ##
 #############
 
-catkin_add_gtest(${PROJECT_NAME}-test
+if(CATKIN_ENABLE_TESTING)
+  catkin_add_gtest(${PROJECT_NAME}-test
     test/test_main.cpp
     test/RosGeometryMsgPhysicalQuantitiesTest.cpp
     test/RosGeometryMsgRotationTest.cpp
     test/RosGeometryMsgPoseTest.cpp
     test/RosTfPoseTest.cpp
     test/TfConventionTest.cpp
-)
-if(TARGET ${PROJECT_NAME}-test)
-   target_link_libraries(${PROJECT_NAME}-test ${catkin_LIBRARIES})
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/test
+    )
+  if(TARGET ${PROJECT_NAME}-test)
+    target_link_libraries(${PROJECT_NAME}-test ${catkin_LIBRARIES})
+    find_package(cmake_code_coverage QUIET)
+    if(cmake_code_coverage_FOUND)
+      add_gtest_coverage(TEST_BUILD_TARGETS ${PROJECT_NAME}-test)
+    endif(cmake_code_coverage_FOUND)
+  endif()
 endif()
 
 install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-)
+  )
